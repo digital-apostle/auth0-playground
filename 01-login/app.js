@@ -11,21 +11,28 @@ var userInViews = require('./lib/middleware/userInViews');
 var authRouter = require('./routes/auth');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var homeRouter = require('./routes/home');
 
 dotenv.load();
 
 // Configure Passport to use Auth0
 var strategy = new Auth0Strategy(
   {
-/*     domain: process.env.AUTH0_DOMAIN,
+   /* domain: process.env.AUTH0_DOMAIN,
     clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET, */
 
-    domain: 'apigee-poc.eu.auth0.com',
+  /* domain: 'apigee-poc.eu.auth0.com',
     clientID: 'Ihn6q5ti7fCST7n2HGaEPwchFlihKAJX',
-    clientSecret: 'mzCGd8ZlOOtCadjR1Et6hl7QaRyB2PDO5qc2RW1ZJkCgwPnkp1qLs7oTyDa5ehav',
+    clientSecret: 'mzCGd8ZlOOtCadjR1Et6hl7QaRyB2PDO5qc2RW1ZJkCgwPnkp1qLs7oTyDa5ehav', 
 
-
+    domain: 'darrenkabengele-eval-test.apigee.net/division/domain/identity/ext/v1',
+    clientID: 'Qf6G9Gu5VG1UPazuGei21zrb90viMZWC',
+    clientSecret: '0Og2NKeaqwMpf4Xk', */
+   
+    domain: 'dev-uk.apis.allianz/division/domain/identity/ext/v1',
+    clientID: 'iMJNIxFoDEfCGDnKlyqMlXYVdqzmDYAr',
+    clientSecret: 'kBrq5FALoFsdbtLY',
     callbackURL:
       process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
   },
@@ -33,7 +40,11 @@ var strategy = new Auth0Strategy(
     // accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
     // profile has all the information from the user
-    return done(null, profile);
+    console.log('accessToken = ', accessToken);
+    console.log('refreshToken =', refreshToken);
+    console.log('extraParams = ', extraParams);
+    console.log('profile = ', profile);
+    return done(null, accessToken, refreshToken, extraParams, profile);
   }
 );
 require('https').globalAgent.options.rejectUnauthorized = false;
@@ -43,7 +54,6 @@ if (process.env['https_proxy']) {
   var httpsProxyAgent = new HttpsProxyAgent(process.env['https_proxy']);
   strategy._oauth2.setAgent(httpsProxyAgent);
 }
-
 
 passport.use(strategy);
 
@@ -67,7 +77,7 @@ app.use(cookieParser());
 
 // config express-session
 var sess = {
-  secret: 'CHANGE THIS SECRET',
+  secret: 'lihKAJXQf6G',
   cookie: {},
   resave: false,
   saveUninitialized: true
@@ -100,6 +110,7 @@ app.use(userInViews());
 app.use('/', authRouter);
 app.use('/', indexRouter);
 app.use('/', usersRouter);
+app.use('/', homeRouter);
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {

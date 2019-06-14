@@ -10,22 +10,32 @@ dotenv.config();
 
 // Perform the login, after login Auth0 will redirect to callback
 router.get('/login', passport.authenticate('auth0', {
-  scope: 'openid email profile'
+  scope: 'openid email profile offline_access'
 }), function (req, res) {
   res.redirect('/');
 });
 
 // Perform the final stage of authentication and redirect to previously requested URL or '/user'
 router.get('/callback', function (req, res, next) {
-  console.log("in callback");
   passport.authenticate('auth0', function (err, user, info) {
+
+    /* If authentication failed, user will be set to false. 
+    If an exception occurred, err will be set. 
+    An optional info argument will be passed, 
+    containing additional details provided 
+    by the strategy's verify callback. */
+    
+    console.log('info= ', info);
+
+    console.log('user= ', user);
+
     if (err) { return next(err); }
     if (!user) { return res.redirect('/login'); }
     req.logIn(user, function (err) {
       if (err) { return next(err); }
       const returnTo = req.session.returnTo;
       delete req.session.returnTo;
-      res.redirect(returnTo || '/user');
+      res.redirect(returnTo || '/home');
     });
   })(req, res, next);
 });

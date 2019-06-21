@@ -24,15 +24,15 @@ var strategy = new Auth0Strategy(
 
   /* domain: 'apigee-poc.eu.auth0.com',
     clientID: 'Ihn6q5ti7fCST7n2HGaEPwchFlihKAJX',
-    clientSecret: 'mzCGd8ZlOOtCadjR1Et6hl7QaRyB2PDO5qc2RW1ZJkCgwPnkp1qLs7oTyDa5ehav', 
+    clientSecret: 'mzCGd8ZlOOtCadjR1Et6hl7QaRyB2PDO5qc2RW1ZJkCgwPnkp1qLs7oTyDa5ehav', */
 
     domain: 'darrenkabengele-eval-test.apigee.net/division/domain/identity/ext/v1',
     clientID: 'Qf6G9Gu5VG1UPazuGei21zrb90viMZWC',
-    clientSecret: '0Og2NKeaqwMpf4Xk', */
+    clientSecret: '0Og2NKeaqwMpf4Xk', 
    
-    domain: 'dev-uk.apis.allianz/division/domain/identity/ext/v1',
-    clientID: 'iMJNIxFoDEfCGDnKlyqMlXYVdqzmDYAr',
-    clientSecret: 'kBrq5FALoFsdbtLY',
+  //  domain: 'dev-uk.apis.allianz/division/domain/identity/ext/v1',
+   // clientID: 'iMJNIxFoDEfCGDnKlyqMlXYVdqzmDYAr',
+ //   clientSecret: 'kBrq5FALoFsdbtLY',
     callbackURL:
       process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
   },
@@ -44,7 +44,7 @@ var strategy = new Auth0Strategy(
     console.log('refreshToken =', refreshToken);
     console.log('extraParams = ', extraParams);
     console.log('profile = ', profile);
-    return done(null, accessToken, refreshToken, extraParams, profile);
+    return done(null, profile, extraParams);
   }
 );
 require('https').globalAgent.options.rejectUnauthorized = false;

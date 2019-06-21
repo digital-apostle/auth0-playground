@@ -10,6 +10,7 @@ dotenv.config();
 
 // Perform the login, after login Auth0 will redirect to callback
 router.get('/login', passport.authenticate('auth0', {
+  // use roles permissions etc to get Id RBAC
   scope: 'openid email profile offline_access'
 }), function (req, res) {
   res.redirect('/');
@@ -26,17 +27,29 @@ router.get('/callback', function (req, res, next) {
     by the strategy's verify callback. */
     
     console.log('info= ', info);
-
+    
     console.log('user= ', user);
 
     if (err) { return next(err); }
+
     if (!user) { return res.redirect('/login'); }
+    
+
+    //  we're preeparing to redirect, so set up the request object and add the tokens.  Add id_token to req.token and access_token to AuthHeader.
+    var id_token = info.id_token;
+    var access_token = info.access_token;
+
+
+    //req object
     req.logIn(user, function (err) {
       if (err) { return next(err); }
+      
       const returnTo = req.session.returnTo;
       delete req.session.returnTo;
-      res.redirect(returnTo || '/home');
+
+      res.redirect(returnTo || '/home?access_token='+access_token+'&id_token='+id_token);
     });
+
   })(req, res, next);
 });
 

@@ -2,16 +2,32 @@ extends layout
 
 block content
   .w3-card-4
-    h1 Welcome #{user.nickname}
-    img(src=user.picture)
-    h2 User profile
-    p This is the content of <code>req.user</code>.
-    p Note: <code>_raw</code> and <code>_json</code> properties have been ommited.
+  h1 Apigee enablement project and Auth0 
+  h2 User profile
+  p This is the content of <code>req.user</code>.
+  p Note: <code>_raw</code> and <code>_json</code> properties have been ommited.\
+  p #{userProfile}
     
-    p #{userProfile}
+block tokens
+  h1 Tokens
+  
+  h2 ACCESS TOKEN (JWT)
+  p(id ='accessTokenID') This is the content of <code>access_token</code>.
+  p #{access_token}
 
-  p This is the content of <code>access_token</code>.
-     p #{access_token}
+  p (id ='expireInID') This is the content of <code>expires_in</code>.
+  p #{expires_in}
+      	
+  h2 ID TOKEN (JWT)    	
+  p (id ='idTokenID') This is the content of <code>id_token</code>.
+  p #{id_token}
+  h2 REFRESH TOKEN
+  p (id ='refreshTokenID') This is the content of   <code>refresh_token</code>.
+  p #{refresh_token}
+    	
 
-  p This is the content of <code>id_token</code>.
-     p #{id_token}
+block decodedIdToken
+  h1 Decoded Tokens
+  h2 Decoded ID TOKEN (JWT)  
+  p (id ='idTokenJsonID') This is the decoded contents of <code>id_token</code>.
+  p #{id_token_json}

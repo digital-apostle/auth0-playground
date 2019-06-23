@@ -38,6 +38,7 @@ router.get('/callback', function (req, res, next) {
     //  we're preeparing to redirect, so set up the request object and add the tokens.  Add id_token to req.token and access_token to AuthHeader.
     var id_token = info.id_token;
     var access_token = info.access_token;
+    var expires_in = info.expires_in;
 
 
     //req object
@@ -47,7 +48,7 @@ router.get('/callback', function (req, res, next) {
       const returnTo = req.session.returnTo;
       delete req.session.returnTo;
 
-      res.redirect(returnTo || '/home?access_token='+access_token+'&id_token='+id_token);
+      res.redirect(returnTo || '/home?access_token='+access_token+'&expires_in='+expires_in+'&id_token='+id_token);
     });
 
   })(req, res, next);

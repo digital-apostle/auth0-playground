@@ -9,12 +9,6 @@ router.get('/home', secured(), function (req, res, next) {
   const id_token = req.query.id_token;
   const expires_in = req.query.expires_in;
 
-  delete req.query.access_token;
-  delete req.query.id_token;
-  // console.log(req);
-
-  console.log('response =' + res);
-
   res.render('home', {
     userProfile: userProfile.toString(),
     access_token : access_token,
